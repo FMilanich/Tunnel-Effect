@@ -23,6 +23,8 @@ public class TunnelDemo{
         // this is the animation loop
         while(true){
 
+            panel.render();
+
             panel.repaint();
 
             // 16 is standard for 60 fps

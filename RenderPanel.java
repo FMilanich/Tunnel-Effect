@@ -15,6 +15,7 @@ public class RenderPanel extends JPanel {
     private int[] texture;
     private int[] distance;
     private int[] angle;
+    private int time;
 
     // This initializes the panel, this works like a framebuffer
     // I store everything on the array as RGB color pixel data, as I want to just use the CPU
@@ -53,10 +54,29 @@ public class RenderPanel extends JPanel {
 
                 // coeficients of the formulas are mostly random, changing them changes the effect in a way
                 // Distance is the distance formula from the center
-                distance[index] = (int)(32 * 256 / Math.sqrt((x - width / 2)^2+(y - height / 2)^2)) % 256;
+                distance[index] = (int)(32 * 256 / Math.sqrt((x - width / 2)*(x - width / 2)+(y - height / 2)*(y - height / 2))) % 256;
                 // Angle is the atan2 function (atan2 is just atan but doesn't mix up positives and negatives)
                 angle[index] = (int)(128 * Math.atan2(y - height / 2, x - width / 2) / Math.PI);
 
+            }
+        }
+
+
+    }
+
+    public void render(){
+
+        time++;
+
+        for(int x=0; x < 800; x++){
+            for(int y=0; y < 600; y++){
+
+                int index = x + y * 800;
+
+                int x_2 = (distance[index] + time) & 255;
+                int y_2 = (angle[index] + time) & 255;
+
+                pixels[index] = texture[x_2 + y_2 * 256];
             }
         }
 
@@ -66,6 +86,8 @@ public class RenderPanel extends JPanel {
     protected  void paintComponent(Graphics g){
 
         super.paintComponent(g);
+
+        render();
 
         g.drawImage(image,0,0,null);
 
