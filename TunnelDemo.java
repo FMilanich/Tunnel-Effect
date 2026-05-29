@@ -1,8 +1,9 @@
+import java.io.IOException;
 import javax.swing.JFrame;
 
 public class TunnelDemo{
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException{
 
         // It could be bigger but idk
         int width = 800;

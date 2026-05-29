@@ -2,6 +2,9 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 
@@ -9,34 +12,35 @@ public class RenderPanel extends JPanel {
 
     private BufferedImage image;
     private int[] pixels;
+    private int[] texture;
 
     // This initializes the panel, this works like a framebuffer
     // I store everything on the array as RGB color pixel data, as I want to just use the CPU
     // The point of this is not using the GPU or modern libraries
 
-    public RenderPanel(int width, int height){
+    public RenderPanel(int width, int height) throws IOException{
 
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();     // All this is just to get the raw data of every pixel
 
-        // Of course the test should be with hatsune miku colors lmao
-       for (int x=0; x < width; x++){
+ 
+        // this is for reading the texture file
+        // we store everything in a 1D array (the indexation should be x + y * 256)
+        texture = new int[256*256];
+        try{
 
-            for(int y=0; y < height; y++){
+            BufferedImage texImage = ImageIO.read(new File("texture.jpg"));
+            texImage.getRGB(0, 0, 256, 256, texture, 0, 256);
 
-                // The screen pixels are in a 1D array, and this formula is the one that converts a 2D to 1D
-                int index = x + y * width;
+        } catch(IOException e){
+            e.printStackTrace();
+        }
 
-                int red = (0x82*y) / height;
-                int green = (0xC8*y) / height;
-                int blue = 0xFF;
+        // a quick test for coloring the screen with the middle pixel of the texture (should be beige)
+        for(int i=0; i < pixels.length; i++){
 
-                // this is just for the format, it's a 32-bit number. each 8 bits is for red, green and blue respectively.
-                int color = (red << 16) | (green << 8) | blue;
-
-                pixels[index] = color;
-            }
-       }
+            pixels[i] = texture[128 + 128 * 256];
+        }
 
     }
 
