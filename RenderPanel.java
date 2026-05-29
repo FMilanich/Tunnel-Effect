@@ -54,7 +54,7 @@ public class RenderPanel extends JPanel {
 
                 // coeficients of the formulas are mostly random, changing them changes the effect in a way
                 // Distance is the distance formula from the center
-                distance[index] = (int)(32 * 256 / Math.sqrt((x - width / 2)*(x - width / 2)+(y - height / 2)*(y - height / 2))) % 256;
+                distance[index] = (int)(30 * 256 / Math.sqrt((x - width / 2)*(x - width / 2)+(y - height / 2)*(y - height / 2))) % 256;
                 // Angle is the atan2 function (atan2 is just atan but doesn't mix up positives and negatives)
                 angle[index] = (int)(128 * Math.atan2(y - height / 2, x - width / 2) / Math.PI);
 
@@ -86,8 +86,6 @@ public class RenderPanel extends JPanel {
     protected  void paintComponent(Graphics g){
 
         super.paintComponent(g);
-
-        render();
 
         g.drawImage(image,0,0,null);
 
