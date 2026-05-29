@@ -19,6 +19,12 @@ public class RenderPanel extends JPanel {
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();     // All this is just to get the raw data of every pixel
 
+        // Of course the test should be with hatsune miku colors lmao
+        for(int i = 0; i < pixels.length; i++){
+
+            pixels[i] = 0x82C8E5;
+        }
+
     }
 
     @Override
