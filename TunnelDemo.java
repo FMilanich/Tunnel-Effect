@@ -18,5 +18,21 @@ public class TunnelDemo{
         window.setSize(width, height);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        // this is the animation loop
+        while(true){
+
+            panel.repaint();
+
+            // 16 is standard for 60 fps
+            // I'm aware that printStackTrace() is bad practice, this is just a demo
+            try {
+                Thread.sleep(16);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 }
