@@ -20,10 +20,23 @@ public class RenderPanel extends JPanel {
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();     // All this is just to get the raw data of every pixel
 
         // Of course the test should be with hatsune miku colors lmao
-        for(int i = 0; i < pixels.length; i++){
+       for (int x=0; x < width; x++){
 
-            pixels[i] = 0x82C8E5;
-        }
+            for(int y=0; y < height; y++){
+
+                // The screen pixels are in a 1D array, and this formula is the one that converts a 2D to 1D
+                int index = x + y * width;
+
+                int red = (0x82*y) / height;
+                int green = (0xC8*y) / height;
+                int blue = 0xFF;
+
+                // this is just for the format, it's a 32-bit number. each 8 bits is for red, green and blue respectively.
+                int color = (red << 16) | (green << 8) | blue;
+
+                pixels[index] = color;
+            }
+       }
 
     }
 
