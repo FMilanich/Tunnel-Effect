@@ -13,6 +13,8 @@ public class RenderPanel extends JPanel {
     private BufferedImage image;
     private int[] pixels;
     private int[] texture;
+    private int[] distance;
+    private int[] angle;
 
     // This initializes the panel, this works like a framebuffer
     // I store everything on the array as RGB color pixel data, as I want to just use the CPU
@@ -36,10 +38,26 @@ public class RenderPanel extends JPanel {
             e.printStackTrace();
         }
 
-        // a quick test for coloring the screen with the middle pixel of the texture (should be beige)
-        for(int i=0; i < pixels.length; i++){
+        // here we compute the lookup tables
+        // basically we calculate the distance and angle from the center beforehand
+        // doing this we don't have to calculate sqrt() and atan2() on the animation loop
 
-            pixels[i] = texture[128 + 128 * 256];
+
+        distance = new int[width*height];
+        angle = new int[width*height];
+
+        for(int x=0; x < width; x++){
+            for(int y=0; y < height; y++){
+
+                int index = x + y * width;
+
+                // coeficients of the formulas are mostly random, changing them changes the effect in a way
+                // Distance is the distance formula from the center
+                distance[index] = (int)(32 * 256 / Math.sqrt((x - width / 2)^2+(y - height / 2)^2)) % 256;
+                // Angle is the atan2 function (atan2 is just atan but doesn't mix up positives and negatives)
+                angle[index] = (int)(128 * Math.atan2(y - height / 2, x - width / 2) / Math.PI);
+
+            }
         }
 
     }
